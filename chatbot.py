@@ -14,7 +14,7 @@ generation_config = {
   "temperature": 1,
   "top_p": 0.95,
   "top_k": 40,
-  "max_output_tokens": 256,
+  "max_output_tokens": 512,
   "response_mime_type": "application/json",
 }
 
@@ -111,15 +111,18 @@ history=[
     },
   ]
 
-chat_session = model.start_chat(
-  history = history
-)
-userInput = input()
-response = chat_session.send_message(userInput)
+while True: 
+  userInput = input()
+  
+  chat_session = model.start_chat(
+    history = history
+  )
 
-modelResponse = response.text
-parsedResponse = json.loads(modelResponse)
-print(parsedResponse['response'])
+  response = chat_session.send_message(userInput)
 
-history.append({"role": "user", "parts": [userInput]})
-history.append({"role": "model", "parts": [modelResponse]})
+  modelResponse = response.text
+  parsedResponse = json.loads(modelResponse)
+  print(parsedResponse['response'])
+
+  history.append({"role": "user", "parts": [userInput]})
+  history.append({"role": "model", "parts": [modelResponse]})
